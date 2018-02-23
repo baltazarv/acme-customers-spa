@@ -1,0 +1,28 @@
+{
+  "name": "acme-customers-spa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baltazarv/acme-customers-spa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baltazarv/acme-customers-spa/issues"
+  },
+  "homepage": "https://github.com/baltazarv/acme-customers-spa#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "method-override": "^2.3.10",
+    "pg": "^7.4.1",
+    "sequelize": "^4.33.4"
+  }
+}
