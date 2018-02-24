@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const db = require('./db');
 const port = process.env.PORT || 3000;
 
-// app.use(express.static('./index.html'));
+db.sync()
+  .then(() => db.seed());
 
 app.get('/', (req, res, next) => {
   // servers pages
