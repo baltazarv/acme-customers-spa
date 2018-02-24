@@ -1,27 +1,50 @@
 const express = require('express');
 const app = express();
+const port = process.env.PORT || 3000;
 const path = require('path');
 const db = require('./db');
-const port = process.env.PORT || 3000;
+const { Customer } = db.models;
+const bodyParser = require('body-parser');
 
 db.sync()
   .then(() => db.seed());
 
-app.get('/', (req, res, next) => {
-  // servers pages
-  res.sendFile(path.join(__dirname, '/index.html'));
-});
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '/client')));
 
+// gets all customers
 app.get('/api/customers', (req, res, next) => {
-  // gets all customers
+  Customer.findAll()
+  .then(customers => res.json(customers))
+  .catch(next);
 });
 
-app.post('/api/customers/:id', (req, res, next) => {
-  // create a customer and return it
+// create a customer and return it
+app.post('/api/customers', (req, res, next) => {
+  if ( req.body.email) {
+    Customer.findOrCreate({
+      where: {
+        email: req.body.email
+      }
+    })
+    .spread((user, created) => {
+      if (created) res.json(user);
+      else res.status(500).json({ error: 'Customer already exists.' });
+    })
+    .catch(err => {
+      res.json(err);
+    });
+  }
 });
 
+// delete a customer
 app.delete('/api/customers/:id', (req, res, next) => {
-  // delete a customer
+  Customer.findById(req.params.id)
+  .then(customer => {
+    customer.destroy();
+  })
+  .then(() => res.sendStatus(200)) // to avoid 404 error
+  .catch(next);
 });
 
 app.listen(port, () => console.log(`Open http://localhost:${port}`));

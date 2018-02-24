@@ -3,7 +3,10 @@ const { Sequelize } = conn;
 
 const Customer = conn.define('customer', {
   email: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    validate: {
+      isEmail: true
+    }
   }
 });
 
